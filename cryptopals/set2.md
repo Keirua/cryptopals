@@ -1,6 +1,6 @@
 # Set 2
 
- This is the first of several sets on block cipher cryptography. This is bread-and-butter crypto, the kind you'll see implemented in most web software that does crypto.
+This is the first of several sets on block cipher cryptography. This is bread-and-butter crypto, the kind you'll see implemented in most web software that does crypto.
 
 This set is relatively easy. People that clear set 1 tend to clear set 2 somewhat quickly.
 
