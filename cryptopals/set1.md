@@ -112,7 +112,7 @@ You can obviously decrypt this using the OpenSSL command-line tool, but we're ha
 
 ## Detect AES in ECB mode
 
-In [this file](data/7.txt) are a bunch of hex-encoded ciphertexts.
+In [this file](data/8.txt) are a bunch of hex-encoded ciphertexts.
 
 One of them has been encrypted with ECB.
 
