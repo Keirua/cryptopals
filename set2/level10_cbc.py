@@ -2,9 +2,7 @@ from base64 import b64decode
 from Crypto.Cipher import AES
 from binascii import hexlify, unhexlify
 
-block_size = 16
 
-iv = b'\x00' * block_size
 
 def pkcs(s:str, block_size: int, padding: bytes) -> str:
 	remainder = len(s) % block_size
@@ -28,18 +26,6 @@ def aes_128_cbc_encrypt(plaintext, iv, key):
 	aes_cbc128 = AES.new(key, AES.MODE_CBC, iv)
 	return aes_cbc128.encrypt(plaintext)
 
-key =       b"YELLOW SUBMARINE"
-plaintext = b"Salut tout le monde !"
-
-plaintext_padded = iv + pkcs(plaintext, 16, b'\x00')
-
-print(aes_128_ecb_decrypt(aes_128_ecb_encrypt(plaintext_padded, key), key))
-
-print("iteration !!!")
-idx = 0
-while(idx+block_size <= len(plaintext_padded)):
-	print(plaintext_padded[idx:idx+block_size])
-	idx += block_size
 
 def xor_combine(hex_a1, hex_a2):
 	return bytes([x1 ^ x2 for (x1, x2) in zip(hex_a1, hex_a2)])
@@ -70,12 +56,20 @@ def cbc_decrypt(cipher_padded, iv, key):
 	return out
 
 
-fd = open("../cryptopals/data/10.txt", "r")
-ciphertext = (b64decode("".join(fd.read())))
+if __name__ == '__main__':
+	block_size = 16
+	iv = b'\x00' * block_size
+	key =       b"YELLOW SUBMARINE"
+	plaintext = b"Salut tout le monde !"
+	plaintext_padded = iv + pkcs(plaintext, 16, b'\x00')
+	print(aes_128_ecb_decrypt(aes_128_ecb_encrypt(plaintext_padded, key), key))
 
-print(ciphertext)
-print(len(ciphertext), len(ciphertext)%16)
-print(cbc_decrypt(ciphertext, iv, key))
+	fd = open("../cryptopals/data/10.txt", "r")
+	ciphertext = (b64decode("".join(fd.read())))
+
+	print(ciphertext)
+	print(len(ciphertext), len(ciphertext)%16)
+	print(cbc_decrypt(ciphertext, iv, key))
 
 
 

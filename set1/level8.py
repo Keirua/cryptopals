@@ -8,7 +8,7 @@ ciphers = [x for x in fd.read().split("\n")]
 
 hex0 = unhexlify(ciphers[0])
 
-def compute_block_occurences(cipher, block_size=16):
+def count_block_occurences(cipher, block_size=16):
 	occurences = {}
 	index = 0
 	while index + block_size <= len(cipher):
@@ -17,10 +17,10 @@ def compute_block_occurences(cipher, block_size=16):
 		index += block_size
 	return occurences
 
-# occurence0 = compute_block_occurences(hex0)
+# occurence0 = count_block_occurences(hex0)
 occurences = []
 for c in ciphers:
-	occurence = compute_block_occurences(unhexlify(c))
+	occurence = count_block_occurences(unhexlify(c))
 	occurences.append({
 		'ciphertext': c,
 		'occurences': occurence

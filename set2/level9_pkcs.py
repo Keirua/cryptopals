@@ -1,10 +1,10 @@
 import unittest
 
 def pkcs(s:str, block_size: int, padding: bytes) -> str:
-	remainder = len(s) % block_size
-	if remainder == 0:
-		return s
-	return s + padding * (block_size-remainder)
+    remainder = len(s) % block_size
+    if remainder == 0:
+        return s
+    return s + padding * (block_size-remainder)
 
 print(pkcs(b"YELLOW SUBMARINE", 8, b'\x04'))
 print(pkcs(b"YELLOW SUBMARINE", 20, b'\x04'))
