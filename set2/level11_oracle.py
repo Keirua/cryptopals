@@ -44,8 +44,9 @@ def detect_mode(oracle):
 	mode = 'cbc' if len(block_counts.keys()) == len(encoded['ciphertext']) / 16 else 'ecb'
 	print(encoded['mode'] == mode)
 
-for i in range(10):
-	encoded = oracle_encode(plaintext)
-	detect_mode(encoded)
+if __name__ == '__main__':
+	for i in range(10):
+		encoded = oracle_encode(plaintext)
+		detect_mode(encoded)
 
 	
