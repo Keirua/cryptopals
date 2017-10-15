@@ -99,3 +99,120 @@ Here's roughly how:
 Congratulations.
 
 This is the first challenge we've given you whose solution will break real crypto. Lots of people know that when you encrypt something in ECB mode, you can see penguins through it. Not so many of them can decrypt the contents of those ciphertexts, and now you can. If our experience is any guideline, this attack will get you code execution in security tests about once a year.
+
+
+
+
+
+# ECB cut-and-paste
+
+Write a k=v parsing routine, as if for a structured cookie. The routine should take:
+
+foo=bar&baz=qux&zap=zazzle
+
+... and produce:
+
+{
+  foo: 'bar',
+  baz: 'qux',
+  zap: 'zazzle'
+}
+
+(you know, the object; I don't care if you convert it to JSON).
+
+Now write a function that encodes a user profile in that format, given an email address. You should have something like:
+
+profile_for("foo@bar.com")
+
+... and it should produce:
+
+{
+  email: 'foo@bar.com',
+  uid: 10,
+  role: 'user'
+}
+
+... encoded as:
+
+email=foo@bar.com&uid=10&role=user
+
+Your "profile_for" function should not allow encoding metacharacters (& and =). Eat them, quote them, whatever you want to do, but don't let people set their email address to "foo@bar.com&role=admin".
+
+Now, two more easy functions. Generate a random AES key, then:
+
+    Encrypt the encoded user profile under the key; "provide" that to the "attacker".
+    Decrypt the encoded user profile and parse it.
+
+Using only the user input to profile_for() (as an oracle to generate "valid" ciphertexts) and the ciphertexts themselves, make a role=admin profile.
+
+
+# Byte-at-a-time ECB decryption (Harder)
+
+Take your oracle function from #12. Now generate a random count of random bytes and prepend this string to every plaintext. You are now doing:
+
+AES-128-ECB(random-prefix || attacker-controlled || target-bytes, random-key)
+
+Same goal: decrypt the target-bytes.
+Stop and think for a second.
+
+What's harder than challenge #12 about doing this? How would you overcome that obstacle? The hint is: you're using all the tools you already have; no crazy math is required.
+
+Think "STIMULUS" and "RESPONSE".
+
+
+# PKCS#7 padding validation
+
+Write a function that takes a plaintext, determines if it has valid PKCS#7 padding, and strips the padding off.
+
+The string:
+
+"ICE ICE BABY\x04\x04\x04\x04"
+
+... has valid padding, and produces the result "ICE ICE BABY".
+
+The string:
+
+"ICE ICE BABY\x05\x05\x05\x05"
+
+... does not have valid padding, nor does:
+
+"ICE ICE BABY\x01\x02\x03\x04"
+
+If you are writing in a language with exceptions, like Python or Ruby, make your function throw an exception on bad padding.
+
+Crypto nerds know where we're going with this. Bear with us.
+
+# CBC bitflipping attacks
+
+Generate a random AES key.
+
+Combine your padding code and CBC code to write two functions.
+
+The first function should take an arbitrary input string, prepend the string:
+
+"comment1=cooking%20MCs;userdata="
+
+.. and append the string:
+
+";comment2=%20like%20a%20pound%20of%20bacon"
+
+The function should quote out the ";" and "=" characters.
+
+The function should then pad out the input to the 16-byte AES block length and encrypt it under the random AES key.
+
+The second function should decrypt the string and look for the characters ";admin=true;" (or, equivalently, decrypt, split the string on ";", convert each resulting string into 2-tuples, and look for the "admin" tuple).
+
+Return true or false based on whether the string exists.
+
+If you've written the first function properly, it should not be possible to provide user input to it that will generate the string the second function is looking for. We'll have to break the crypto to do that.
+
+Instead, modify the ciphertext (without knowledge of the AES key) to accomplish this.
+
+You're relying on the fact that in CBC mode, a 1-bit error in a ciphertext block:
+
+    Completely scrambles the block the error occurs in
+    Produces the identical 1-bit error(/edit) in the next ciphertext block.
+
+Stop and think for a second.
+
+Before you implement this attack, answer this question: why does CBC mode have this property?
