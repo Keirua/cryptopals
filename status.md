@@ -8,9 +8,9 @@
  	- done using scoring based on frequency
  - [x] Detect single-character XOR
  - [x] Implement repeating-key XOR
- - [ ] Break repeating-key XOR
+ - [x] Break repeating-key XOR
  - [x] AES in ECB mode
- - [ ] Detect AES in ECB mode
+ - [x] Detect AES in ECB mode
 
 Tried chi squared method for ranking, didn't work well due to the non ascii characters
 
