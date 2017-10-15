@@ -32,22 +32,21 @@ print(block_length)
 
 def break_ciphertext():
 	found = str()
-	
-	for i in range(block_length-1):
-		crafted_block = bytes('A' * (block_length - len(found) - 1), 'ascii')
-		cipher = weird_cipher(crafted_block)
+	n = 0
+	for n in [1,2,3,4]:
+		for i in range(block_length):
+			# crafted_block = bytes('A' * (block_length - ((len(found)+1))%block_length), 'ascii')
+			crafted_block = bytes('A' * (block_length - i - 1), 'ascii')
+			# print(crafted_block)
+			# print(len(found), len(crafted_block))
+			cipher = weird_cipher(crafted_block)
 
-		for c in string.printable:
-			match_attempt = bytearray(crafted_block) + bytearray(found, 'ascii') + bytearray(c, 'ascii')
-			#print(match_attempt)
-			#print(" > ", c)
-			#print(weird_cipher(match_attempt)[:block_length])
-			#print(cipher[:block_length])
-			if(weird_cipher(match_attempt)[:block_length] == cipher[:block_length]):
-				found += c
-				# print("\n" * 3)
-				break
-	print(found)
+			for c in string.printable:
+				match_attempt = bytearray(crafted_block) + bytearray(found, 'ascii') + bytearray(c, 'ascii')
+				if(weird_cipher(match_attempt)[:block_length*(n)] == cipher[:block_length*(n)]):
+					found += c
+					break
+	print(bytes(found, 'ascii'))
 break_ciphertext()
 
 # print(hexlify(weird_cipher(b'\x41' * 15)))
