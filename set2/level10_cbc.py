@@ -2,8 +2,6 @@ from base64 import b64decode
 from Crypto.Cipher import AES
 from binascii import hexlify, unhexlify
 
-
-
 def pkcs(s:str, block_size: int, padding: bytes) -> str:
 	remainder = len(s) % block_size
 	if remainder == 0:
