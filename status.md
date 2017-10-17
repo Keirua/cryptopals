@@ -2,7 +2,7 @@
 # stuff I've learnt
 
  - the modes of operation for a block cipher, their weaknesses, some attacks against them
- - python. Got better.
+ - python, rust. Got better.
  - frequency analysis
  - dictionnary attack
  - timing attack
