@@ -39,3 +39,10 @@ https://crypto.stackexchange.com/questions/30209/developing-algorithm-for-detect
 
 Great set, cleverly built. 2 timing attacks, beating the hard one feels awesome.
 Crafting payload for the cbc bitflipping attack was pretty fun too.
+
+# Set 3
+
+In order to check that the mersenne twister works as expected, diff its output with the output of the original algorithm:
+
+$ gcc mt19937.c -o mt19937
+$ diff <(python level21_mt19937.py 2342 15) <(./mt19937 2342 15)

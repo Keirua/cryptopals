@@ -1,4 +1,5 @@
-// A modification of the original MT19937 so that I can make sure I reach the same output
+// A modification of the original MT19937
+// for debug and validation purpose
 // found on http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
 /* 
    A C-program for MT19937, with initialization improved 2002/1/26.
@@ -44,6 +45,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* Period parameters */  
 #define N 624
@@ -104,13 +106,17 @@ unsigned long genrand_int32(void)
 }
 
 
-int main(void)
+int main(int argc, char** argv)
 {
-    int nb = 15;
-    int i;
-    init_genrand(1234);
-    printf("%d outputs of genrand_int32()\n", nb);
-    for (i=0; i<nb; i++) {
+    if(argc != 3){
+      printf("usage: %s seed nb_digits", argv[0]);
+      return 1;
+    }
+    int seed = atoi(argv[1]);
+    int nb = atoi(argv[2]);
+    init_genrand(seed);
+
+    for (int i=0; i<nb; i++) {
       printf("%lu\n", genrand_int32());
     }
 
