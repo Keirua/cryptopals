@@ -5,6 +5,7 @@ from level10_cbc import aes_128_cbc_encrypt,aes_128_cbc_decrypt, pkcs
 from level11_oracle import n_random_bytes
 import string
 import pprint
+import random
 global_key = n_random_bytes(16)
 
 def parse_params(parameters):
@@ -37,29 +38,32 @@ def draw_blocks_and_check(ciphertext):
 	print("Are we admin ?", b'admin' in params)
 
 # We provide a plaintext with only valid characters
-payload = b"\x3Aadmin\x3Ctrue"
-ciphertext = custom_cipher(payload)
+# It contains first, block-size worth of bytes that we control, then a payload
+# we want the first controlled part to be so that when it is encrypted,
+# we can flip 2 particular bits the way we want
+while True:
+	padding = bytearray("".join([ random.choice(string.ascii_letters) for i in range(16)]), 'ascii')
+	payload = bytearray(b"\x3Aadmin\x3Ctrue")
+	ciphertext = custom_cipher(bytes(padding + payload))
+	# The reason why we generate a buffer of random letters is that we want
+	# to make sure we can flip the bits we want
+	if(ciphertext[32+0] & 1 == 0 and ciphertext[32+6] & 1 == 1):
+		break;
 
 print("\tBefore modification")
 draw_blocks_and_check(ciphertext)
 
 print()
 
-# We need to find a proper way to hack this
-for i in range(0, 5+1): # we can only use 
-	# then we modify the corresponding bit in the previoud so that it can be decoded
-	ciphertext_hacked = bytearray(custom_cipher(b'a' * i + payload))
-	# The offset 0 and 6 are the position of the ; and = in the previous block
-	if(ciphertext_hacked[16+0+i] & 1 == 0 and ciphertext_hacked[16+6+i] & 1 == 1):
-		print("hack possible !")
-		ciphertext_hacked[16+0+i] |= 1 # we want to set the first bit to 1 in order to have 0x3B = ';''
-		ciphertext_hacked[16+6+i] &= ~1 # we want to set the first bit to 0 in order to have 0x3D = '='
-		break;
-	else:
-		print("hack impossible... try again with another offset")
+# then we modify the corresponding bit in the previoud so that it can be decoded
+ciphertext_hacked = bytearray(custom_cipher(bytes(padding+payload)))
+# The offset 0 and 6 are the position of the ; and = in the previous block
+ciphertext_hacked[32+0] |= 1 # we want to set the first bit to 1 in order to have 0x3B = ';''
+ciphertext_hacked[32+6] &= ~1 # we want to set the first bit to 0 in order to have 0x3D = '='		break;
 
 print("\tAfter modification")
 draw_blocks_and_check(bytes(ciphertext_hacked))
+
 
 print(b';'.hex()) # = b';' = 0x3b = 111011
 print(b'\x3A')    # = 0x3A = b111010 = b':'
