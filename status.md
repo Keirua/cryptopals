@@ -1,4 +1,14 @@
 
+# stuff I've learnt
+
+ - the modes of operation for a block cipher, their weaknesses, some attacks against them
+ - python. Got better.
+ - frequency analysis
+ - dictionnary attack
+ - timing attack
+ - input crafting
+ - binary operations
+
 # Set 1
 
  - [x] Convert hex to base64
@@ -15,3 +25,17 @@
 Tried chi squared method for ranking, didn't work well due to the non ascii characters
 
 https://crypto.stackexchange.com/questions/30209/developing-algorithm-for-detecting-plain-text-via-frequency-analysis
+
+# Set 2
+
+ - [x] Implement PKCS#7 padding
+ - [x] Implement CBC mode
+ - [x] An ECB/CBC detection oracle
+ - [x] Byte-at-a-time ECB decryption (Simple)
+ - [ ] ECB cut-and-paste
+ - [x] Byte-at-a-time ECB decryption (Harder)
+ - [x] PKCS#7 padding validation
+ - [x] CBC bitflipping attacks
+
+Great set, cleverly built. 2 timing attacks, beating the hard one feels awesome.
+Crafting payload for the cbc bitflipping attack was pretty fun too.
