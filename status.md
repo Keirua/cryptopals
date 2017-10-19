@@ -42,7 +42,17 @@ Crafting payload for the cbc bitflipping attack was pretty fun too.
 
 # Set 3
 
+## Level 21
+
 In order to check that the mersenne twister works as expected, diff its output with the output of the original algorithm:
 
 $ gcc mt19937.c -o mt19937
 $ diff <(python level21_mt19937.py 2342 15) <(./mt19937 2342 15)
+
+## Level 22
+
+Attempted to bruteforce it. Python was not a good idea (something like 1000 verifications/s). Rust quickly proved to be able to find the seed in a reasonnable time (~30 minutes), which is about 100x faster. 
+
+If you wanna do bruteforce, you'd better do it with a fast language :)
+
+$ time target/release/crack_mt32seed ~/dev/cryptopals/set3/mt32/1508440814.mt32
