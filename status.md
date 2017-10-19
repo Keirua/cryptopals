@@ -8,6 +8,8 @@
  - timing attack
  - input crafting
  - binary operations
+ - When there's no solution, there's still bruteforce :)
+ - [Endianness](https://betterexplained.com/articles/understanding-big-and-little-endian-byte-order/)
 
 # Set 1
 
@@ -42,6 +44,16 @@ Crafting payload for the cbc bitflipping attack was pretty fun too.
 
 # Set 3
 
+ - [ ] The CBC padding oracle
+ - [x] Implement CTR, the stream cipher mode
+ - [ ] Break fixed-nonce CTR mode using substitutions
+ - [ ] Break fixed-nonce CTR statistically
+ - [x] Implement the MT19937 Mersenne Twister RNG
+ - [x] Crack an MT19937 seed
+    - with python then rust
+ - [ ] Clone an MT19937 RNG from its output
+ - [ ] Create the MT19937 stream cipher and break it
+
 ## Level 21
 
 In order to check that the mersenne twister works as expected, diff its output with the output of the original algorithm:
@@ -51,8 +63,22 @@ $ diff <(python level21_mt19937.py 2342 15) <(./mt19937 2342 15)
 
 ## Level 22
 
-Attempted to bruteforce it. Python was not a good idea (something like 1000 verifications/s). Rust quickly proved to be able to find the seed in a reasonnable time (~30 minutes), which is about 100x faster. 
+Attempted to bruteforce it. Python was not a good idea (it only tries  like 1000 seeds/s). Rust quickly proved to be able to find the seed in a reasonnable time (~1H), which is about 100x faster. 
 
 If you wanna do bruteforce, you'd better do it with a fast language :)
 
-$ time target/release/crack_mt32seed ~/dev/cryptopals/set3/mt32/1508440814.mt32
+	$ time target/release/crack_mt32seed ~/dev/cryptopals/set3/mt32/1508440814.mt32
+	...
+	1499000000
+	1500000000
+	1501000000
+	1502000000
+	1503000000
+	1504000000
+	1505000000
+	1506000000
+	1507000000
+	1508000000
+	1508440814 is the seed's value
+	target/release/crack_mt32seed ~/dev/cryptopals/set3/mt32/1508440814.mt32  3277,82s user 0,95s system 99% cpu 54:38,87 total
+
