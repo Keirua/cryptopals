@@ -1,5 +1,7 @@
 
-# stuff I've learnt
+My implementation of the solutions to [Matsumoto's crypto challenges](http://www.cryptopals.com/).
+
+# Stuff I've learnt
 
  - the modes of operation for a block cipher, their weaknesses, some attacks against them
  - python, rust. Got better.
@@ -51,7 +53,7 @@ Crafting payload for the cbc bitflipping attack was pretty fun too.
  - [x] Implement the MT19937 Mersenne Twister RNG
  - [x] Crack an MT19937 seed
     - with python then rust
- - [ ] Clone an MT19937 RNG from its output
+ - [x] Clone an MT19937 RNG from its output
  - [ ] Create the MT19937 stream cipher and break it
 
 ## Level 21

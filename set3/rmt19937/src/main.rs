@@ -49,12 +49,46 @@ impl Mt32 {
 		self.mt[624-1] = self.mt[396] ^ (y >> 1u64) ^ mag01[(y & 1u64) as usize];
         self.index = 0;
     }
+
+    pub fn untamper(v:u64) -> u64 {
+        let mut z = v;
+        z ^= z >> 18;
+        z ^= z << 15 & 0xefc60000;
+        z ^= (z << 7) & 0x9d2c5680 & 0b00000000000000000011111110000000;
+        z ^= (z << 7) & 0x9d2c5680 & 0b00000000000111111100000000000000;
+        z ^= (z << 7) & 0x9d2c5680 & 0b00001111111000000000000000000000;
+        z ^= (z << 7) & 0x9d2c5680 & 0b11110000000000000000000000000000;
+        z ^= (z >> 11) & 0b11111111110000000000000000000000;
+        z ^= (z >> 11) & 0b00000000001111111111100000000000;
+        z ^= (z >> 11) & 0b00000000000000000000011111111111;
+        return z;
+    }
+
+    pub fn clone(values624: Vec<u64>) -> Mt32 {
+        let mut m : Mt32 = Mt32 {
+            index: 625,
+            mt: [0; 624]
+        };
+        for i in 0..624 {
+            m.mt[i] = Mt32::untamper(values624[i]);
+        }
+
+        return m;
+    }
 }
 
 fn main() {
 	let mut m : Mt32 = Mt32::new(1234);
 
-	for _ in 0..10 {
-		println!("{}", m.extract_number());
+    let mut values = Vec::new();
+    for _ in 0..624 {
+        values.push(m.extract_number());
+    }
+
+    let mut c = Mt32::clone(values);
+	for _ in 0..100 {
+        let v_original = m.extract_number();
+        let v_cloned = c.extract_number();
+		println!("{}", v_original == v_cloned);
 	}
 }
