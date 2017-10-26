@@ -46,7 +46,7 @@ Crafting payload for the cbc bitflipping attack was pretty fun too.
 
 # Set 3
 
- - [ ] The CBC padding oracle
+ - [x] The CBC padding oracle
  - [x] Implement CTR, the stream cipher mode
  - [ ] Break fixed-nonce CTR mode using substitutions
  - [ ] Break fixed-nonce CTR statistically
@@ -55,6 +55,13 @@ Crafting payload for the cbc bitflipping attack was pretty fun too.
     - with python then rust
  - [x] Clone an MT19937 RNG from its output
  - [ ] Create the MT19937 stream cipher and break it
+
+## Level 17
+
+https://en.wikipedia.org/wiki/Padding_oracle_attack
+https://github.com/neuhalje/aes_padding_oracle_attack
+
+All the articles about the weakness explain the same thing, the general idea is not very hard, on paper I had the correct formulas anyway, the algorithm is only 50 lines long... and yet, it took me 2 evenings to correctly implement this attack.
 
 ## Level 21
 
