@@ -2,11 +2,11 @@ from base64 import b64decode
 from Crypto.Cipher import AES
 from binascii import hexlify, unhexlify
 
-def pkcs(s:str, block_size: int, padding: bytes) -> str:
-	remainder = len(s) % block_size
-	if remainder == 0:
-		return s
-	return s + padding * (block_size-remainder)
+def pkcs(s:str, block_size: int) -> str:
+    remainder = len(s) % block_size
+    if remainder == 0:
+        return s
+    return s + bytes([block_size-remainder for i in range(block_size-remainder)])
 
 def aes_128_ecb_decrypt(ciphertext, key):
 	aes_ecb128 = AES.new(key, AES.MODE_ECB)
