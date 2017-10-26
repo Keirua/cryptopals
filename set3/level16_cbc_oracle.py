@@ -3,10 +3,10 @@ from Crypto.Cipher import AES
 from binascii import hexlify, unhexlify
 from random import randint
 
+# Implementation of PKCS7
+# https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS7
 def pkcs(s:str, block_size: int) -> str:
     remainder = len(s) % block_size
-    if remainder == 0:
-        return s
     return s + bytes([block_size-remainder for i in range(block_size-remainder)])
 
 def pkcs_strip(s):
@@ -107,3 +107,6 @@ ciphertext, iv = generate_token(global_key)
 plaintext, success = consume_token(ciphertext, iv, global_key)
 print("ciphertext\n{}\n{}\n".format(ciphertext, iv))
 print("plaintext\n{}\n{}\n".format(success, plaintext))
+
+print(pkcs(b"abcd", 4))
+print(pkcs(b"abcd1", 4))
