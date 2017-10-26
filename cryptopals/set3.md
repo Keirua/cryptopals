@@ -1,4 +1,3 @@
-
 # Crypto Challenge Set 3
 
 This is the next set of block cipher cryptography challenges (even the randomness stuff here plays into block cipher crypto).
