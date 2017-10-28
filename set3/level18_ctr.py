@@ -44,7 +44,7 @@ def aes_128_ctr(text, key, nonce):
 		out.append(cipher)
 		counter += 1
 		offset += 16
-	return out
+	return b''.join(out)
 
 print(aes_128_ctr(b64decode(ciphertext), key, 0))
 print()
