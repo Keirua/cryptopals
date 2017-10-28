@@ -34,20 +34,18 @@ def xor_combine(hex_a1, hex_a2):
 	return bytes([x1 ^ x2 for (x1, x2) in zip(hex_a1, hex_a2)])
 
 def aes_128_ctr(text, key, nonce):
-	out = []
+	out = bytes()
 	offset = 0
 	counter = 0
 	while offset < len(text):
 		current_plaintext = text[offset:offset+16]
 		aesctr = aes_128_ecb_encrypt(create_input(nonce, counter), key)
 		cipher = xor_combine(aesctr, current_plaintext)
-		out.append(cipher)
+		out += cipher
 		counter += 1
 		offset += 16
-	return b''.join(out)
+	return out
 
-print(aes_128_ctr(b64decode(ciphertext), key, 0))
-print()
 
 hex_cipher = b64decode(ciphertext)
 print(aes_128_ctr(hex_cipher, key, 0))
