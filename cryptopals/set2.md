@@ -1,4 +1,4 @@
-# Set 2
+# Set 2
 
 This is the first of several sets on block cipher cryptography. This is bread-and-butter crypto, the kind you'll see implemented in most web software that does crypto.
 
@@ -15,7 +15,7 @@ Three of the challenges in this set are extremely valuable in breaking real-worl
  - PKCS#7 padding validation
  - CBC bitflipping attacks
 
-## Implement PKCS#7 padding
+## Implement PKCS#7 padding
 
 A block cipher transforms a fixed-sized block (usually 8 or 16 bytes) of plaintext into ciphertext. But we almost never want to transform a single block; we encrypt irregularly-sized messages.
 
@@ -29,7 +29,7 @@ So: pad any block to a specific block length, by appending the number of bytes o
 
 "YELLOW SUBMARINE\x04\x04\x04\x04"
 
-## Implement CBC mode
+## Implement CBC mode
 
 CBC mode is a block cipher mode that allows us to encrypt irregularly-sized messages, despite the fact that a block cipher natively only transforms individual blocks.
 
@@ -44,7 +44,7 @@ Don't cheat.
 
 Do not use OpenSSL's CBC code to do CBC mode, even to verify your results. What's the point of even doing this stuff if you aren't going to learn from it?
 
-## An ECB/CBC detection oracle
+## An ECB/CBC detection oracle
 
 Now that you have ECB and CBC working:
 
@@ -64,7 +64,7 @@ Now, have the function choose to encrypt under ECB 1/2 the time, and under CBC t
 Detect the block cipher mode the function is using each time. You should end up with a piece of code that, pointed at a block box that might be encrypting ECB or CBC, tells you which one is happening.
 
 
-## Byte-at-a-time ECB decryption (Simple)
+## Byte-at-a-time ECB decryption (Simple)
 
 Copy your oracle function to a new function that encrypts buffers under ECB mode using a consistent but unknown key (for instance, assign a single random key, once, to a global variable).
 
@@ -146,7 +146,7 @@ Now, two more easy functions. Generate a random AES key, then:
 Using only the user input to profile_for() (as an oracle to generate "valid" ciphertexts) and the ciphertexts themselves, make a role=admin profile.
 
 
-# Byte-at-a-time ECB decryption (Harder)
+# Byte-at-a-time ECB decryption (Harder)
 
 Take your oracle function from #12. Now generate a random count of random bytes and prepend this string to every plaintext. You are now doing:
 

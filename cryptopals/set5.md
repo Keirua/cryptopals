@@ -15,7 +15,7 @@ On the other hand, our favorite cryptanalytic attack ever is in this set (you'll
  - Implement RSA
  - Implement an E=3 RSA Broadcast attack
 
-# Implement Diffie-Hellman
+## Implement Diffie-Hellman
 
 For one of the most important algorithms in cryptography this exercise couldn't be a whole lot easier.
 
@@ -52,7 +52,7 @@ Note that you'll need to write your own modexp (this is blackboard math, don't f
 
 
 
-# Implement a MITM key-fixing attack on Diffie-Hellman with parameter injection
+## Implement a MITM key-fixing attack on Diffie-Hellman with parameter injection
 
 Use the code you just worked out to build a protocol and an "echo" bot. You don't actually have to do the network part of this if you don't want; just simulate that. The protocol is:
 
@@ -92,7 +92,7 @@ Decrypt the messages from M's vantage point as they go by.
 
 Note that you don't actually have to inject bogus parameters to make this attack work; you could just generate Ma, MA, Mb, and MB as valid DH parameters to do a generic MITM attack. But do the parameter injection attack; it's going to come up again.
 
-# Implement DH with negotiated groups, and break with malicious "g" parameters
+## Implement DH with negotiated groups, and break with malicious "g" parameters
 
 A->B
     Send "p", "g"
@@ -117,7 +117,7 @@ Write attacks for each.
 When does this ever happen?
 Honestly, not that often in real-world systems. If you can mess with "g", chances are you can mess with something worse. Most systems pre-agree on a static DH group. But the same construction exists in Elliptic Curve Diffie-Hellman, and this becomes more relevant there.
 
-# Implement Secure Remote Password (SRP)
+## Implement Secure Remote Password (SRP)
 
 To understand SRP, look at how you generate an AES key from DH; now, just observe you can do the "opposite" operation an generate a numeric parameter from a hash. Then:
 
@@ -162,7 +162,7 @@ It doesn't matter how you go from integer to string or string to integer (where 
 This is basically Diffie Hellman with a tweak of mixing the password into the public keys. The server also takes an extra step to avoid storing an easily crackable password-equivalent.
 
 
-# Break SRP with a zero key
+## Break SRP with a zero key
 
 Get your SRP working in an actual client-server setting. "Log in" with a valid password using the protocol.
 
@@ -173,7 +173,7 @@ Cryptanalytic MVP award
 
 Trevor Perrin and Nate Lawson taught us this attack 7 years ago. It is excellent. Attacks on DH are tricky to "operationalize". But this attack uses the same concepts, and results in auth bypass. Almost every implementation of SRP we've ever seen has this flaw; if you see a new one, go look for this bug.
 
-# Offline dictionary attack on simplified SRP
+## Offline dictionary attack on simplified SRP
 S
 
 x = SHA256(salt|password)
@@ -211,7 +211,7 @@ Now, run the protocol as a MITM attacker: pose as the server and use arbitrary v
 
 Crack the password from A's HMAC-SHA256(K, salt).
 
-# Implement RSA
+## Implement RSA
 
 There are two annoying things about implementing RSA. Both of them involve key generation; the actual encryption/decryption in RSA is trivial.
 
@@ -236,7 +236,7 @@ Now:
 Finally, to encrypt a string, do something cheesy, like convert the string to hex and put "0x" on the front of it to turn it into a number. The math cares not how stupidly you feed it strings.
 
 
-# Implement an E=3 RSA Broadcast attack
+## Implement an E=3 RSA Broadcast attack
 
 Assume you're a Javascript programmer. That is, you're using a naive handrolled RSA to encrypt without padding.
 

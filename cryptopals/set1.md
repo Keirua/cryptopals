@@ -9,7 +9,7 @@
  - AES in ECB mode
  - Detect AES in ECB mode
 
-# Convert hex to base64
+## Convert hex to base64
 
 The string:
 
@@ -24,7 +24,7 @@ Cryptopals Rule
 
 Always operate on raw bytes, never on encoded strings. Only use hex and base64 for pretty-printing.
 
-# Fixed XOR
+## Fixed XOR
 
 Write a function that takes two equal-length buffers and produces their XOR combination.
 
@@ -40,7 +40,7 @@ If your function works properly, then when you feed it the string:
 
 746865206b696420646f6e277420706c6179
 
-# Single-byte XOR cipher
+## Single-byte XOR cipher
 
 The hex encoded string:
 
@@ -55,7 +55,7 @@ Achievement Unlocked
 
 You now have our permission to make "ETAOIN SHRDLU" jokes on Twitter.
 
-# Detect single-character XOR
+## Detect single-character XOR
 
 One of the 60-character strings in [this file](data/4.txt) has been encrypted by single-character XOR.
 
@@ -63,7 +63,7 @@ Find it.
 
 (Your code from #3 should help.)
 
-# Break repeating-key XOR
+## Break repeating-key XOR
 
 There's [a file here](data/6.txt). It's been base64'd after being encrypted with repeating-key XOR.
 
