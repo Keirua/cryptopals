@@ -1,8 +1,4 @@
-from random import randint
-from binascii import hexlify, unhexlify
-from base64 import b64decode
-from level10_cbc import aes_128_cbc_encrypt,aes_128_cbc_decrypt, pkcs
-from level11_oracle import n_random_bytes
+from cryptolib import aes_128_cbc_encrypt,aes_128_cbc_decrypt, pkcs, n_random_bytes
 import string
 import pprint
 import random
@@ -26,7 +22,7 @@ def custom_cipher(plaintext):
 	fulltext += bytearray(plaintext)
 	fulltext += bytearray(b';comment2=%20like%20a%20pound%20of%20bacon')
 
-	return aes_128_cbc_encrypt(pkcs(bytes(fulltext), 16, b'\x00'), b'\x00' * 16, global_key)
+	return aes_128_cbc_encrypt(pkcs(bytes(fulltext), 16), b'\x00' * 16, global_key)
 
 def draw_blocks_and_check(ciphertext):
 	plaintext = aes_128_cbc_decrypt(ciphertext, b'\x00' * 16, global_key)
