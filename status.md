@@ -95,3 +95,13 @@ If you wanna do bruteforce, you'd better do it with a fast language :)
 	1508440814 is the seed's value
 	target/release/crack_mt32seed ~/dev/cryptopals/set3/mt32/1508440814.mt32  3277,82s user 0,95s system 99% cpu 54:38,87 total
 
+# Set 4
+
+ - [x] Break "random access read/write" AES CTR
+ - [ ] CTR bitflipping
+ - [ ] Recover the key from CBC with IV=Key
+ - [ ] Implement a SHA-1 keyed MAC
+ - [ ] Break a SHA-1 keyed MAC using length extension
+ - [ ] Break an MD4 keyed MAC using length extension
+ - [ ] Implement and break HMAC-SHA1 with an artificial timing leak
+ - [ ] Break HMAC-SHA1 with a slightly less artificial timing leak
