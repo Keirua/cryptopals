@@ -14,7 +14,7 @@ def weird_cipher(text):
 	fulltext = bytearray(text)
 	fulltext += bytearray(b64decode(unknown))
 	#fulltext += bytearray(plaintext)
-	return aes_128_ecb_encrypt(pkcs(bytes(fulltext), 16, b'\x00'), global_key)
+	return aes_128_ecb_encrypt(pkcs(bytes(fulltext), 16), global_key)
 
 
 
