@@ -24,8 +24,7 @@ def custom_cipher(plaintext):
 
 	return aes_128_cbc_encrypt(pkcs(bytes(fulltext), 16), b'\x00' * 16, global_key)
 
-def draw_blocks_and_check(ciphertext):
-	plaintext = aes_128_cbc_decrypt(ciphertext, b'\x00' * 16, global_key)
+def draw_blocks_and_check(plaintext):
 	for i in range(0, len(plaintext), 16):
 		print(plaintext[i:i+16])
 	params = parse_params(plaintext)
@@ -46,23 +45,25 @@ while True:
 	if(ciphertext[32+0] & 1 == 0 and ciphertext[32+6] & 1 == 1):
 		break;
 
-print("\tBefore modification")
-draw_blocks_and_check(ciphertext)
+if __name__ == '__main__':
+	print("\tBefore modification")
+	plaintext = aes_128_cbc_decrypt(ciphertext, b'\x00' * 16, global_key)
+	draw_blocks_and_check(plaintext)
 
-print()
+	print()
 
-# then we modify the corresponding bit in the previoud so that it can be decoded
-ciphertext_hacked = bytearray(custom_cipher(bytes(padding+payload)))
-# The offset 0 and 6 are the position of the ; and = in the previous block
-ciphertext_hacked[32+0] |= 1 # we want to set the first bit to 1 in order to have 0x3B = ';''
-ciphertext_hacked[32+6] &= ~1 # we want to set the first bit to 0 in order to have 0x3D = '='		break;
+	# then we modify the corresponding bit in the previoud so that it can be decoded
+	ciphertext_hacked = bytearray(custom_cipher(bytes(padding+payload)))
+	# The offset 0 and 6 are the position of the ; and = in the previous block
+	ciphertext_hacked[32+0] |= 1 # we want to set the first bit to 1 in order to have 0x3B = ';''
+	ciphertext_hacked[32+6] &= ~1 # we want to set the first bit to 0 in order to have 0x3D = '='		break;
 
-print("\tAfter modification")
-draw_blocks_and_check(bytes(ciphertext_hacked))
+	print("\tAfter modification")
+	plaintext = aes_128_cbc_decrypt(bytes(ciphertext_hacked), b'\x00' * 16, global_key)
+	draw_blocks_and_check(plaintext)
 
+	print(b';'.hex()) # = b';' = 0x3b = 111011
+	print(b'\x3A')    # = 0x3A = b111010 = b':'
 
-print(b';'.hex()) # = b';' = 0x3b = 111011
-print(b'\x3A')    # = 0x3A = b111010 = b':'
-
-print(b'='.hex()) # = b'=' = 0x3D = b111101
-print(b'\x3C')    # = 0x3C = b111100 = b'<'
+	print(b'='.hex()) # = b'=' = 0x3D = b111101
+	print(b'\x3C')    # = 0x3C = b111100 = b'<'
