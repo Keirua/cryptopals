@@ -153,3 +153,21 @@ class TestSHA1(unittest.TestCase):
 
 #if __name__ == '__main__':
 #    unittest.main()
+
+def sha1_keyed_mac(text, key=b'plop'):
+    return sha1(key + text)
+
+
+def isAuthentic(someHash, text, key=b'plop'):
+    return sha1_keyed_mac(text, key) == someHash
+
+sometext = b"abc"
+
+assert not sha1_keyed_mac(sometext) == sha1(sometext)
+assert not sha1_keyed_mac(sometext) == sha1_keyed_mac(b"abd")
+assert isAuthentic(sha1_keyed_mac(sometext), sometext)
+
+# If we attempt to modify the hash, our message is not authentic anymore
+tampered_mac = list(sha1_keyed_mac(sometext))
+tampered_mac[12] = 0xF
+assert not isAuthentic(bytes(tampered_mac), sometext)
