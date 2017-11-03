@@ -3,6 +3,7 @@ from base64 import b64decode
 from Crypto.Cipher import AES
 from binascii import hexlify, unhexlify
 from random import randint
+import hashlib
 
 # Implementation of PKCS7
 # https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS7
@@ -108,6 +109,26 @@ def aes_128_ctr(text, key, nonce):
         offset += 16
     return out
 
+# Level 31
+# https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
+# SHA1-based HMAC
+def hmac_sha1 (key, message):
+    if (len(key) > 64):
+        key = hashlib.sha1(key).digest() # keys longer than blocksize are shortened
+   
+    if (len(key) < 64):
+        # keys shorter than blocksize are zero-padded
+        key += b'\x00' * (64 - len(key))
+
+    o_key_pad = xor_combine(b'\x5c' * 64, key)
+    i_key_pad = xor_combine(b'\x36' * 64, key)
+
+    return hashlib.sha1(o_key_pad + hashlib.sha1(i_key_pad + message).digest()).hexdigest()
+
+class TestHMAC_SHA1(unittest.TestCase):
+    def test_nominal(self):
+        self.assertEqual("fbdb1d1b18aa6c08324b7d64b71fb76370690e1d", hmac_sha1(b"",b""))
+        self.assertEqual("de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9", hmac_sha1(b"key", b"The quick brown fox jumps over the lazy dog"))
 
 class TestPkcs(unittest.TestCase):
     def test_main(self):
@@ -139,6 +160,10 @@ class TestPkcsStrip(unittest.TestCase):
             pkcs_strip(b"ICE ICE BABY\x01\x02\x03")
         with self.assertRaises(ValueError):
             pkcs_strip(b"ICE ICE BABY\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11")
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()     
