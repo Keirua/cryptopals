@@ -104,7 +104,7 @@ If you wanna do bruteforce, you'd better do it with a fast language :)
  - [ ] Break a SHA-1 keyed MAC using length extension
  - [ ] Break an MD4 keyed MAC using length extension
  - [x] Implement and break HMAC-SHA1 with an artificial timing leak
- - [ ] Break HMAC-SHA1 with a slightly less artificial timing leak
+ - [x] Break HMAC-SHA1 with a slightly less artificial timing leak
 
 
 ## HMAC-SHA1
@@ -153,5 +153,22 @@ Simple timing attack, but pretty cool though !
 	1856.85546875 7
 	1908.12255859375 6
 	1957.110107421875 c
-	2004.2978515625 4
+	2004.29785156254
 	The broken mac hash is adbf605f30fea41b6611f77c45835fd98fa476c4
+
+## Level 32
+
+Pretty cool to go down to 5 nanoseconds !
+Elements that worked:
+
+ - only run the timing process.
+ - use statistical analysis to take multiple samples (10 were not enough) and remove outliers
+ - Could be improved with more threads and a more efficient cpu usage.
+
+time python level32_hmac_harder.py
+Duration = 5e-06s
+The key hash is b'f778af443d68c252128566a202e0217af9701e903a2d94814d9bd594db081a40f720e400172e5bcd1d978402ac434d9cddd28e72d9f66c967f8ef6ed5f673e4e'
+The broken mac hash is 0c0d03d910ebfee7ae956d1759b2dd95114d2da3
+The computed hash is 0c0d03d910ebfee7ae956d1759b2dd95114d2da3
+They match !
+python level32_hmac_harder.py  1,15s user 0,61s system 15% cpu 11,551 total
