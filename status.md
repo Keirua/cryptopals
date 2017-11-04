@@ -117,39 +117,7 @@ Simple timing attack, but pretty cool though !
 	50.220947265625 a
 	100.552734375 d
 	151.00732421875 b
-	201.095947265625 f
-	250.763427734375 6
-	301.393310546875 0
-	350.97265625 5
-	401.712646484375 f
-	452.179443359375 3
-	502.0517578125 0
-	551.902587890625 f
-	602.562255859375 e
-	652.865478515625 a
-	702.506103515625 4
-	752.42626953125 1
-	802.69091796875 b
-	853.024169921875 6
-	903.249267578125 6
-	954.131103515625 1
-	1003.811279296875 1
-	1053.411865234375 f
-	1104.21826171875 7
-	1153.592529296875 7
-	1204.70849609375 c
-	1255.463623046875 4
-	1305.658447265625 5
-	1355.065673828125 8
-	1405.784912109375 3
-	1455.9755859375 5
-	1506.12939453125 f
-	1555.75244140625 d
-	1606.553955078125 9
-	1656.902099609375 8
-	1706.769775390625 f
-	1757.3037109375 a
-	1804.88134765625 4
+	...
 	1856.85546875 7
 	1908.12255859375 6
 	1957.110107421875 c
@@ -172,3 +140,36 @@ The broken mac hash is 0c0d03d910ebfee7ae956d1759b2dd95114d2da3
 The computed hash is 0c0d03d910ebfee7ae956d1759b2dd95114d2da3
 They match !
 python level32_hmac_harder.py  1,15s user 0,61s system 15% cpu 11,551 total
+
+
+# Set 5
+
+## Diffie Hellman
+
+https://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
+
+Diffie-Hellman is a way of generating a shared secret between two people in such a way that the secret can't be seen by observing the communication. That's an important distinction: You're not sharing information during the key exchange, you're creating a key together.
+
+This is particularly useful because you can use this technique to create an encryption key with someone, and then start encrypting your traffic with that key. And even if the traffic is recorded and later analyzed, there's absolutely no way to figure out what the key was, even though the exchanges that created it may have been visible. This is where perfect [forward secrecy](https://en.wikipedia.org/wiki/Forward_secrecy) comes from. Nobody analyzing the traffic at a later date can break in because the key was never saved, never transmitted, and never made visible anywhere.
+
+The way it works is reasonably simple. A lot of the math is the same as you see in public key crypto in that a trapdoor function is used. And while the discrete logarithm problem is traditionally used (the xy mod p business), the general process can be modified to use [elliptic curve cryptography](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) as well.
+
+But even though it uses the same underlying principles as public key cryptography, this is not asymmetric cryptography because nothing is ever encrypted or decrypted during the exchange. It is, however, an essential building-block, and was in fact the base upon which asymmetric crypto was later built.
+
+The basic idea works like this:
+
+ - I come up with two prime numbers g and p and tell you what they are.
+ - You then pick a secret number (a), but you don't tell anyone. Instead you compute g**a mod p and send that result back to me. (We'll call that A since it came from a).
+ - I do the same thing, but we'll call my secret number b and the computed number B. So I compute g**b mod p and send you the result (called "B")
+ - Now, you take the number I sent you and do the exact same operation with it. So that's B**a mod p.
+ - I do the same operation with the result you sent me, so: A**b mod p.
+
+
+The "magic" here is that the answer I get at step 5 is the same number you got at step 4. Now it's not really magic, it's just math, and it comes down to a fancy property of modulo exponents. Specifically:
+
+    (g**a mod p)**b mod p = g**(ab) mod p
+    (g**b mod p)**a mod p = g**(ba) mod p
+
+Which, if you examine closer, means that you'll get the same answer no matter which order you do the exponentiation in. So I do it in one order, and you do it in the other. I never know what secret number you used to get to the result and you never know what number I used, but we still arrive at the same result.
+
+That result, that number we both stumbled upon in step 4 and 5, is our shared secret key. We can use that as our password for AES or Blowfish, or any other algorithm that uses shared secrets. And we can be certain that nobody else, nobody but us, knows the key that we created together.
