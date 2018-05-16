@@ -4,6 +4,8 @@ from Crypto.Cipher import AES
 from binascii import hexlify, unhexlify
 from random import randint
 import hashlib
+import socket
+import struct
 
 # Implementation of PKCS7
 # https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS7
@@ -162,8 +164,14 @@ class TestPkcsStrip(unittest.TestCase):
             pkcs_strip(b"ICE ICE BABY\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11\x11")
 
 
+def send_int(tcpsocket, ival):
+    tcpsocket.send(struct.pack('!i', ival))
 
-
+def read_int(tcpsocket):
+    buf = ''
+    while len(buf) < 4:
+        buf += str(tcpsocket.recv(8))
+    return struct.unpack('!i', bytes(buf[:4], 'ascii'))[0]
 
 if __name__ == '__main__':
     unittest.main()     
