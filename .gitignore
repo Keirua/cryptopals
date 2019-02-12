@@ -3,3 +3,4 @@ challenges/mt19937
 challenges/rmt19937/target
 challenges/crack_mt32seed/target
 */__pycache__
+.idea/*

@@ -47,6 +47,6 @@ realmac = hmac_sha1(key, file)
 print ("The key hash is {}".format(hexlify(key)))
 broken_mac = break_mac_harder(file)
 print ("The broken mac hash is {}".format(broken_mac))
-print ("The computed hash is {}".format(realmac))
+print ("The computed hash is   {}".format(realmac))
 
 print("They match !" if realmac == broken_mac else "They differ :(")
